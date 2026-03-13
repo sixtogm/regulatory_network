@@ -1,2 +1,12 @@
 # Casos de prueba
-Aqui van las pruebas
+
+## Caso 1
+
+Entrada:
+
+AraC araA +
+AraC araB -
+
+Salida esperada:
+
+AraC 2 araA, araB
