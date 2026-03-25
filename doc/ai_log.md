@@ -75,3 +75,46 @@ for TF in sorted(resumen):
     print(f"| {TF} | {total} | {act} | {rep} | {tipo} |")
 ````
 
+## Actualizacion v1.1
+
+1. Al mismo asistente de IA se le pidio a ayuda para solucionar lo siguiente:
+````py
+with open("results/regulon_summary_output.txt", "w") as out:
+    out.write("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |\n")
+````
+
+````py
+for TF in sorted(regulon):
+    ...
+    out.write(f"| {TF} | {total} | {act} | {rep} | {lista_genes} | {tipo} |")
+````
+
+A lo que sugirio:
+
+````py
+with open("results/regulon_summary_output.txt", "w") as out:
+    out.write("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |\n")
+
+    print("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |")
+
+    for TF in sorted(regulon):
+        total = regulon[TF]["total"]
+        act = regulon[TF]["activados"]
+        rep = regulon[TF]["reprimidos"]
+        
+        genes_ordenados = sorted(regulon[TF]["genes"])
+        lista_genes = ", ".join(genes_ordenados)
+        
+        if act > 0 and rep > 0:
+            tipo = "dual"
+        elif act > 0:
+            tipo = "activador"
+        else:
+            tipo = "represor"
+        
+        linea = f"| {TF} | {total} | {act} | {rep} | {lista_genes} | {tipo} |"
+        
+        out.write(linea + "\n")
+        print(linea)
+````
+Su sugerencia fue aplicada pero modificada en cuanto a rutas dadas.

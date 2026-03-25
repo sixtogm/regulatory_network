@@ -1,10 +1,36 @@
-interactions = [
-    ("AraC", "araA", "+"),
-    ("AraC", "araB", "-"),
-    ("LexA", "recA", "-"),
-    ("CRP", "lacZ", "+"),
-    ("CRP", "lacY", "+")
-]
+interactions=[]
+
+#Lectura de datos desde archivo TSV
+filename= "../data/raw/NetworkRegulatorGene.tsv"
+
+with open(filename) as f:
+    for line in f:
+        line=line.strip()
+
+        if not line:
+            continue
+        
+        if line.startswith("#"):
+            continue
+
+        if line.startswith("1)regulatorId"):
+            continue
+
+        fields=line.split("\t")
+
+        if len(fields) <= 5:
+            continue
+
+        TF=fields[1]
+        gene=fields[4]
+        effect= fields[5]
+
+        if effect not in ["+","-"]:
+            continue
+
+        interactions.append((TF, gene, effect))
+
+
 
 regulon = {}
 
@@ -25,22 +51,27 @@ for TF, gene, effect in interactions:
     elif effect == "-":
         regulon[TF]["reprimidos"] += 1
 
-print("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |")
+with open("../data/results/regulon_summary_output.txt", "w") as out:
+    out.write("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |\n")
 
-for TF in sorted(regulon):
-    total = regulon[TF]["total"]
-    act = regulon[TF]["activados"]
-    rep = regulon[TF]["reprimidos"]
+    print("| TF | Total genes | Activados | Reprimidos | Genes | Tipo |")
+
+    for TF in sorted(regulon):
+      total = regulon[TF]["total"]
+      act = regulon[TF]["activados"]
+      rep = regulon[TF]["reprimidos"]
     
-    genes_ordenados = sorted(regulon[TF]["genes"])
-    lista_genes = ", ".join(genes_ordenados)
+      genes_ordenados = sorted(regulon[TF]["genes"])
+      lista_genes = ", ".join(genes_ordenados)
     
-    if act > 0 and rep > 0:
+      if act > 0 and rep > 0:
         tipo = "dual"
-    elif act > 0:
+      elif act > 0:
         tipo = "activador"
-    else:
+      else:
         tipo = "represor"
     
-    print(f"| {TF} | {total} | {act} | {rep} | {lista_genes} | {tipo} |")
+      linea=(f"| {TF} | {total} | {act} | {rep} | {lista_genes} | {tipo} |")
+      out.write(linea +"\n")
+      print(linea)
 

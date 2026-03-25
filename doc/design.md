@@ -14,3 +14,18 @@
 - Recorrer la lista de los reguladores
   - Contar los genes de la lista de genes regulados por el TF
   - imprime regulador, conteo, lista de genes
+
+## Actualizacion v1.1
+- Leer los datos desde un archivo.
+  -abrir el archivo
+  -recorrer cada línea
+  -limpiar la línea
+  -ignorar líneas vacías
+  -separar columnas
+  -validar número de columnas
+  -extraer TF, gene y effect
+  -validar effect
+  -construir la lista de interacciones
+  -reutilizar el código previo para construir el regulon
+  -generar el formato de salida
+  -guardar los resultados en un archivo
