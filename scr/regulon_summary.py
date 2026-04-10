@@ -1,12 +1,12 @@
 import os
 
-# =========================================
+# ================================================================================================   
 # Lectura del archivo y construcción de interactions
 # ================================================================================================
 # Responsabilidad: Leer el archivo de interacciones y construir una listga de tuplas que contenga la información de cada regulador.
 # Entrada: Un archivo TSV con las interacciones entre reguladores y genes, donde cada línea contiene información sobre un regulador, un gen y el efecto de la regulación (activación o represión).
 # Salida: Una lista de tuplas (TF, gene, effect).
-# =======================================================================
+# ================================================================================================
 
 def load_interactions(filename):
     """Carga las interacciones desde un archivo TSV y devuelve una lista de tuplas (TF, gene, effect).
@@ -52,7 +52,7 @@ def load_interactions(filename):
 
 # ================================================================================================
 # Construcción del regulon con datos extra
-# =====================================================================================
+# ================================================================================================
 # TODO: Extraer construccion del regulon build_regulon()
 # ================================================================================================
 #  Responsabilidad: Se encarga de crear el regulon a partir de la lista de interacciones.
@@ -81,11 +81,11 @@ def build_regulon(interactions):
     return regulon
 
 
-# =========================================
+# =================================================================================
 # Generación de la salida
-# =========================================
+# =================================================================================
 # TODO: Extraer escritura de esta seccion a una funcion write_summary()
-# ===============================================
+# =================================================================================
 # Responsabilidad: Generar un archivo txt con los resultados calculando el tipo de regulador para cada TF antes de escribirlo.
 # Entrada: El regulon hecho en el bloque de condigo anterior.
 # Salida: Archivo txt con los resultados y aparte se imprimen los resultados en la terminal.

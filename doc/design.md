@@ -29,3 +29,10 @@
   -reutilizar el código previo para construir el regulon
   -generar el formato de salida
   -guardar los resultados en un archivo
+
+## Actualizacion v1.2
+Elprograma recibira 2 argumentos desde la linea de comandos
+
+Flujo:
+
+usuario --> CLI (Command Line Interface) --> main () 

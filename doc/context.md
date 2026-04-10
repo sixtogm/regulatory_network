@@ -34,3 +34,8 @@ Generar una tabla que indique para cada TF:
     1. El archivo tiene 7 columnas, las que vamos a utilizar son:
 2. Los resultados deben de mandarse a un archivo de salida.
 
+## Actualizacion v1.2Problema:
+El programa depende de rutas fijas (hardcoded)
+
+Numero requisito:
+El programa debe de recibir 2 argumwntos, el archivo de entrada y el archivo de salida
