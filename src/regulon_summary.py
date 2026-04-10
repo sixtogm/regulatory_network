@@ -1,4 +1,5 @@
 import os
+import sys
 
 # ================================================================================================   
 # Lectura del archivo y construcción de interactions
@@ -92,10 +93,10 @@ def build_regulon(interactions):
 # =================================================================================
 
 def write_summary(regulon):
-    output_file = "../data/results/regulon_summary_output.txt"
+    output_file = sys.argv[2]
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
-    with open("../data/results/regulon_summary_output.txt", "w") as out:
+    with open(output_file, "w") as out:
         out.write("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo\n")
         
         print("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo")
@@ -122,7 +123,8 @@ def write_summary(regulon):
 
 def main ():
 
-    filename = "../data/raw/NetworkRegulatorGene.tsv"
+    filename = sys.argv[1]
+    output_file = sys.argv[2]
     
     # Cargar interacciones
     interactions = load_interactions(filename)
