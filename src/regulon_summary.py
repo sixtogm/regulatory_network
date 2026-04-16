@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 
 # ================================================================================================   
 # Lectura del archivo y construcción de interactions
@@ -123,11 +124,20 @@ def write_summary(regulon):
 
 def main ():
 
-    filename = sys.argv[1]
-    output_file = sys.argv[2]
-    
+
+    # TODO: Extraer argumentos de linea de comandos y tener la funcion de leer_argumentos() 
+    parser = argparse.ArgumentParser(description="Resumen de regulones a partir de un archivo TSV.")
+
+    #Definir argumentos
+    parser.add_argument("input_file", help="Archivo TSV de entrada con interacciones TF-gene.")
+    parser.add_argument("output_file", help="Archivo TSV de salida con resumen del regulon.")
+    parser.add_argument("--min_genes", type=int, default=1, help="Número mínimo de genes regulados para incluir un TF en el resumen.")
+    args = parser.parse_args()
+
+    # TODO: Validar que el archivo de entrada existe y es legible antes de intentar cargarlo.
+
     # Cargar interacciones
-    interactions = load_interactions(filename)
+    interactions = load_interactions(filename=args.input_file)
     
     # Construir regulon
     regulon = build_regulon(interactions)

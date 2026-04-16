@@ -1,11 +1,17 @@
-import sys
+import argparse
 
-print(sys.argv)
+parser = argparse.ArgumentParser(description="Resumen de regulones a partir de un archivo TSV.")
 
-#Funcionalidades del programa
+# Definir argumentos 
+parser.add_argument("input_file", help="Archivo TSV de entrada con interacciones TF-gene.")
+parser.add_argument("output_file", help="Archivo TSV de salida con resumen del regulon.")
 
-input_file= sys.argv[1]
-input_format= sys.argv[2]
-output_file= sys.argv[3]
+parser.add_argument("--min_genes", type=int, default=1, help="Número mínimo de genes regulados para incluir un TF en el resumen.")
 
-open(sys.argv[1], "r").readlines()
+args = parser.parse_args()
+
+print(args)
+
+print(f"Archivo de entrada: {args.input_file}")
+print(f"Archivo de salida: {args.output_file}")
+print(f"Número mínimo de genes regulados: {args.min_genes}")
