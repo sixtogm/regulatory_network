@@ -93,8 +93,7 @@ def build_regulon(interactions):
 # Salida: Archivo txt con los resultados y aparte se imprimen los resultados en la terminal.
 # =================================================================================
 
-def write_summary(regulon):
-    output_file = sys.argv[2]
+def write_summary(regulon, output_file):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
     with open(output_file, "w") as out:
@@ -122,10 +121,7 @@ def write_summary(regulon):
             print(linea)
 
 
-def main ():
-
-
-    # TODO: Extraer argumentos de linea de comandos y tener la funcion de leer_argumentos() 
+def parse_arguments():
     parser = argparse.ArgumentParser(description="Resumen de regulones a partir de un archivo TSV.")
 
     #Definir argumentos
@@ -133,8 +129,23 @@ def main ():
     parser.add_argument("output_file", help="Archivo TSV de salida con resumen del regulon.")
     parser.add_argument("--min_genes", type=int, default=1, help="Número mínimo de genes regulados para incluir un TF en el resumen.")
     args = parser.parse_args()
+    return args
+
+
+def main ():
+
+
+    # TODO: Extraer argumentos de linea de comandos y tener la funcion de leer_argumentos() 
+    args = parse_arguments()
 
     # TODO: Validar que el archivo de entrada existe y es legible antes de intentar cargarlo.
+    if not os.path.isfile(args.input_file):
+        print(f"Error: El archivo de entrada '{args.input_file}' no existe.")
+        sys.exit(1)
+    
+    if not os.access(args.input_file, os.R_OK):
+        print(f"Error: No se puede leer el archivo de entrada '{args.input_file}'.")
+        sys.exit(1)
 
     # Cargar interacciones
     interactions = load_interactions(filename=args.input_file)
@@ -143,7 +154,7 @@ def main ():
     regulon = build_regulon(interactions)
     
     # Generar salida
-    write_summary(regulon)
+    write_summary(regulon, args.output_file)
 
 
 if __name__ == "__main__":
