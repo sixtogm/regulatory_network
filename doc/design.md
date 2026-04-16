@@ -36,3 +36,5 @@ Elprograma recibira 2 argumentos desde la linea de comandos
 Flujo:
 
 usuario --> CLI (Command Line Interface) --> main () 
+
+Se agregó el uso de la librería `argparse` para manejar los argumentos de línea de comandos de manera más robusta y flexible.

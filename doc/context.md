@@ -38,4 +38,6 @@ Generar una tabla que indique para cada TF:
 El programa depende de rutas fijas (hardcoded)
 
 Numero requisito:
-El programa debe de recibir 2 argumwntos, el archivo de entrada y el archivo de salida
+El programa debe de recibir 2 argumentos, el archivo de entrada y el archivo de salida
+
+Se agregó el uso de la librería `argparse` para manejar los argumentos de línea de comandos de manera más robusta y flexible.
