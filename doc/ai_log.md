@@ -157,3 +157,19 @@ Su sugerencia fue aplicada pero modificada en cuanto a rutas dadas.
        regulon = build_regulon(interactions)
        write_summary(regulon, args.output_file)
    ````
+
+## Manejo de Errores en Escritura
+
+1. Se preguntó si ya había manejo de errores en la lectura y la escritura del código.
+
+   - Lectura: Ya tenía un bloque try-except en `load_interactions()` que capturaba `FileNotFoundError`, `PermissionError` y `OSError`.
+   - Escritura: No había manejo de errores en `write_summary()`, solo llamaba `os.makedirs()` y `open()` sin protección.
+
+2. Se le pidio ayuda para implementar un plan para añadir el manejo de errores en la escritura:
+
+   - Agregar un bloque try-except en `write_summary()` con el mismo patrón y nivel de detalle que `load_interactions()`.
+   - Capturar `PermissionError` para errores de permisos en creación de directorio o escritura de archivo.
+   - Capturar `OSError` para otros errores (rutas inválidas, espacio en disco, etc.).
+   - Lanzar `RuntimeError` con mensajes descriptivos consistentes con los de lectura.
+   - Asegurar que `write_summary()` estuviera dentro del try-except de `main()` (ya lo estaba).
+
