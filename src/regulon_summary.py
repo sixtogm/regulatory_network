@@ -21,34 +21,41 @@ def load_interactions(filename):
     """
     interactions = []
 
-    with open(filename) as f:
-         for line in f:
-             
-            line=line.strip()
- 
-            if not line:
-                continue
-        
-            if line.startswith("#"):
-                continue
+    try:
+        with open(filename) as f:
+            for line in f:
+                
+                line=line.strip()
 
-            if line.startswith("1)regulatorId"):
-                continue
-
-            fields=line.split("\t")
-
-            if len(fields) <= 5:
-                continue
-
-            TF=fields[1]
-            gene=fields[4]
-            effect= fields[5]
-
-            if effect not in ["+","-"]:
-                continue
+                if not line:
+                    continue
             
-            interactions.append((TF, gene, effect))    
+                if line.startswith("#"):
+                    continue
 
+                if line.startswith("1)regulatorId"):
+                    continue
+
+                fields=line.split("\t")
+
+                if len(fields) <= 5:
+                    continue
+
+                TF=fields[1]
+                gene=fields[4]
+                effect= fields[5]
+
+                if effect not in ["+","-"]:
+                    continue
+                
+                interactions.append((TF, gene, effect))    
+    except FileNotFoundError:
+        raise RuntimeError(f"Error: El archivo '{filename}' no se encontró.")
+    except PermissionError:
+        raise RuntimeError(f"Error: No se tiene permiso para leer el archivo '{filename}'.")
+    except OSError as e:
+        raise RuntimeError(f"Error al leer el archivo '{filename}': {e}")
+    
     return interactions
 
 
@@ -94,31 +101,46 @@ def build_regulon(interactions):
 # =================================================================================
 
 def write_summary(regulon, output_file):
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    
-    with open(output_file, "w") as out:
-        out.write("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo\n")
+    try:
+        output_dir = os.path.dirname(output_file)
         
-        print("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo")
+        try:
+            os.makedirs(output_dir, exist_ok=True)
+        except PermissionError:
+            raise RuntimeError(f"Error: No se tiene permiso para crear el directorio '{output_dir}'.")
+        except OSError as e:
+            raise RuntimeError(f"Error al crear el directorio '{output_dir}': {e}")
         
-        for TF in sorted(regulon):
-            total = regulon[TF]["total"]
-            act = regulon[TF]["activados"]
-            rep = regulon[TF]["reprimidos"]
-        
-            genes_ordenados = sorted(regulon[TF]["genes"])
-            lista_genes = ", ".join(genes_ordenados)
-        
-            if act > 0 and rep > 0:
-                tipo = "dual"
-            elif act > 0:
-                tipo = "activador"
-            else:
-                tipo = "represor"
-        
-            linea = (f"{TF}\t{total}\t{act}\t{rep}\t{lista_genes}\t{tipo}")
-            out.write(linea + "\n")
-            print(linea)
+        try:
+            with open(output_file, "w") as out:
+                out.write("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo\n")
+                
+                print("TF\tTotal genes\tActivados\tReprimidos\tGenes\tTipo")
+                
+                for TF in sorted(regulon):
+                    total = regulon[TF]["total"]
+                    act = regulon[TF]["activados"]
+                    rep = regulon[TF]["reprimidos"]
+                
+                    genes_ordenados = sorted(regulon[TF]["genes"])
+                    lista_genes = ", ".join(genes_ordenados)
+                
+                    if act > 0 and rep > 0:
+                        tipo = "dual"
+                    elif act > 0:
+                        tipo = "activador"
+                    else:
+                        tipo = "represor"
+                
+                    linea = (f"{TF}\t{total}\t{act}\t{rep}\t{lista_genes}\t{tipo}")
+                    out.write(linea + "\n")
+                    print(linea)
+        except PermissionError:
+            raise RuntimeError(f"Error: No se tiene permiso para escribir en el archivo '{output_file}'.")
+        except OSError as e:
+            raise RuntimeError(f"Error al escribir el archivo '{output_file}': {e}")
+    except RuntimeError:
+        raise
 
 
 def parse_arguments():
@@ -147,15 +169,18 @@ def main ():
         print(f"Error: No se puede leer el archivo de entrada '{args.input_file}'.")
         sys.exit(1)
 
-    # Cargar interacciones
-    interactions = load_interactions(filename=args.input_file)
-    
-    # Construir regulon
-    regulon = build_regulon(interactions)
-    
-    # Generar salida
-    write_summary(regulon, args.output_file)
-
+    try:
+        # Cargar interacciones
+        interactions = load_interactions(filename=args.input_file)
+        
+        # Construir regulon
+        regulon = build_regulon(interactions)
+        
+        # Generar salida
+        write_summary(regulon, args.output_file)
+    except RuntimeError as e:
+        print(e)
+        exit(1)
 
 if __name__ == "__main__":
     main()
