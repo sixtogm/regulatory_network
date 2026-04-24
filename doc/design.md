@@ -38,3 +38,6 @@ Flujo:
 usuario --> CLI (Command Line Interface) --> main () 
 
 Se agregó el uso de la librería `argparse` para manejar los argumentos de línea de comandos de manera más robusta y flexible.
+
+## Actualizacion v1.3
+El programa ahora reconoce e informa ciertos errores a la hora de leer archivos y escribirlos.
